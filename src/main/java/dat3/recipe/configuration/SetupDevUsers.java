@@ -1,4 +1,4 @@
-package dat3.rename_me.configuration;
+package dat3.recipe.configuration;
 
 import dat3.security.entity.Role;
 import dat3.security.entity.UserWithRoles;
@@ -17,14 +17,17 @@ public class SetupDevUsers implements ApplicationRunner {
     UserWithRolesRepository userWithRolesRepository;
     RoleRepository roleRepository;
     PasswordEncoder pwEncoder;
-    String passwordUsedByAll;
+    String passwordForAllAdmins;
+    String passwordForAllUsers;
 
     public SetupDevUsers(UserWithRolesRepository userWithRolesRepository,RoleRepository roleRepository,PasswordEncoder passwordEncoder) {
         this.userWithRolesRepository = userWithRolesRepository;
         this.roleRepository = roleRepository;
         this.pwEncoder = passwordEncoder;
 
-        passwordUsedByAll = "test12";
+        passwordForAllAdmins = "admin";
+
+        passwordForAllUsers = "user";
     }
 
     public void run(ApplicationArguments args) {
@@ -54,14 +57,14 @@ public class SetupDevUsers implements ApplicationRunner {
         System.out.println("**** ** ON YOUR REMOTE DATABASE                 ******************************");
         System.out.println();
         System.out.println("******************************************************************************");
-        UserWithRoles user1 = new UserWithRoles("user1", pwEncoder.encode(passwordUsedByAll), "user1@a.dk");
-        UserWithRoles user2 = new UserWithRoles("user2", pwEncoder.encode(passwordUsedByAll), "user2@a.dk");
-        UserWithRoles user3 = new UserWithRoles("user3", pwEncoder.encode(passwordUsedByAll), "user3@a.dk");
-        UserWithRoles user4 = new UserWithRoles("user4", pwEncoder.encode(passwordUsedByAll), "user4@a.dk");
-        user1.addRole(roleUser);
+        UserWithRoles user1 = new UserWithRoles("admin", pwEncoder.encode(passwordForAllAdmins), "admin1@a.dk");
+        UserWithRoles user2 = new UserWithRoles("user1", pwEncoder.encode(passwordForAllUsers), "user1@a.dk");
+        UserWithRoles user3 = new UserWithRoles("user2", pwEncoder.encode(passwordForAllUsers), "user2@a.dk");
+        UserWithRoles user4 = new UserWithRoles("user3", pwEncoder.encode(passwordForAllUsers), "user3@a.dk");
         user1.addRole(roleAdmin);
         user2.addRole(roleUser);
-        user3.addRole(roleAdmin);
+        user3.addRole(roleUser);
+        user4.addRole(roleUser);
         userWithRolesRepository.save(user1);
         userWithRolesRepository.save(user2);
         userWithRolesRepository.save(user3);

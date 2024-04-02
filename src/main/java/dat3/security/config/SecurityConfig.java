@@ -52,6 +52,17 @@ public class SecurityConfig {
                             .accessDeniedHandler(new CustomOAuth2AccessDeniedHandler()));
 
     http.authorizeHttpRequests((authorize) -> authorize
+            .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.GET, "/info")).permitAll()
+
+
+            .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.GET, "/categories")).permitAll()
+
+            .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.GET, "/recipes")).permitAll()
+            .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.GET, "/recipes/**")).permitAll()
+            .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.POST, "/recipes")).permitAll()
+            .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.PUT, "/recipes/**")).permitAll()
+            .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.DELETE, "/recipes/**")).permitAll()
+
             .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.POST, "/api/auth/login")).permitAll()
             .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.POST, "/api/user-with-role")).permitAll() //Clients can create a user for themself
 
